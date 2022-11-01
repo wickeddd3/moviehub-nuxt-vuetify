@@ -1,3 +1,4 @@
+/* eslint-disable */
 exports.config = {
   //
   // ====================
@@ -13,7 +14,7 @@ exports.config = {
   // directory is where your package.json resides, so `wdio` will be called from there.
   //
   specs: [
-    './test/e2e/**/*.spec.js'
+    './test/e2e/**/*.spec.js',
   ],
   // Patterns to exclude.
   exclude: [
@@ -47,7 +48,7 @@ exports.config = {
     // 5 instances get started at a time.
     maxInstances: 5,
     //
-    browserName: 'chrome'
+    browserName: 'chrome',
     // If outputDir is provided WebdriverIO can capture driver session logs
     // it is possible to configure which logTypes to include/exclude.
     // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
@@ -119,15 +120,15 @@ exports.config = {
   // Test reporter for stdout.
   // The only one supported by default is 'dot'
   // see also: https://webdriver.io/docs/dot-reporter.html
-  reporters: ['spec'],
+  reporters: [ 'spec' ],
 
   //
   // Options to be passed to Mocha.
   // See the full list at http://mochajs.org/
   mochaOpts: {
     ui: 'bdd',
-    timeout: 60000
-  }
+    timeout: 60000,
+  },
   //
   // =====
   // Hooks
@@ -256,4 +257,4 @@ exports.config = {
   */
   // onReload: function(oldSessionId, newSessionId) {
   // }
-}
+};
