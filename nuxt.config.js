@@ -6,8 +6,8 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - moviehub-nuxt-vuetify',
-    title: 'moviehub-nuxt-vuetify',
+    titleTemplate: '%s - <3',
+    title: 'MovieHub',
     htmlAttrs: {
       lang: 'en',
     },
