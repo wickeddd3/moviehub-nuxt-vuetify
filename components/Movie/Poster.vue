@@ -7,7 +7,7 @@
     flat
   >
     <v-card
-      color="grey lighten-1"
+      :img="imgUrl"
       class="ma-2"
       height="450"
       width="300"
@@ -20,5 +20,19 @@
 <script>
 export default {
   name: 'MoviePoster',
+  props: {
+    poster: {
+      type: String,
+      default: '',
+    },
+  },
+  computed: {
+    imgUrl () {
+      if (this.poster) {
+        return `//image.tmdb.org/t/p/w300_and_h450_bestv2/${this.poster}`;
+      }
+      return 'https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg';
+    },
+  },
 };
 </script>

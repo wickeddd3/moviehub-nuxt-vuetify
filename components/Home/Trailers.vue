@@ -73,7 +73,7 @@
 
 <script>
 export default {
-  name: 'HomeMoviesSlideGroup',
+  name: 'HomeTrailers',
   data: () => ({
     model: null,
   }),

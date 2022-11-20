@@ -13,17 +13,34 @@
         MovieHub
       </v-toolbar-title>
 
-      <v-btn
-        v-for="link in links"
-        :key="link.name"
-        :to="link.to"
-        color="white"
-        text
-        link
-        class="overline mx-2"
-      >
-        {{ link.name }}
-      </v-btn>
+      <template v-for="menu in menus">
+        <v-menu :key="menu.name" offset-y>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              color="white"
+              text
+              link
+              class="overline mx-2"
+              v-bind="attrs"
+              v-on="on"
+            >
+              {{ menu.name }}
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item
+              v-for="item in menu.submenu"
+              :key="item.name"
+              :to="item.route"
+              link
+              exact
+              dense
+            >
+              <v-list-item-title>{{ item.name }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </template>
 
       <v-spacer />
 
@@ -43,22 +60,48 @@ export default {
   name: 'AppHeader',
   data () {
     return {
-      links: [
+      menus: [
         {
           name: 'Movies',
-          to: '/movies',
+          submenu: [
+            {
+              name: 'Popular',
+              route: '/movies',
+            },
+            {
+              name: 'Now Playing',
+              route: '/movies?now-playing',
+            },
+            {
+              name: 'Upcoming',
+              route: '/movies?upcoming',
+            },
+            {
+              name: 'Top Rated',
+              route: '/movies?top-rated',
+            },
+          ],
         },
         {
           name: 'TV Shows',
-          to: '/tv-shows',
-        },
-        {
-          name: 'People',
-          to: '/people',
-        },
-        {
-          name: 'More',
-          to: '/more',
+          submenu: [
+            {
+              name: 'Popular',
+              route: '/tv-shows',
+            },
+            {
+              name: 'Airing Today',
+              route: '/tv-shows?airing-today',
+            },
+            {
+              name: 'On TV',
+              route: '/tv-shows?on-the-air',
+            },
+            {
+              name: 'Top Rated',
+              route: '/tv-shows?top-rated',
+            },
+          ],
         },
       ],
     };

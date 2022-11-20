@@ -1,7 +1,7 @@
 <template>
   <v-card
     height="400"
-    img="https://images.pexels.com/photos/373543/pexels-photo-373543.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    img="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"
     flat
     class="d-flex justify-center align-center grey lighten-2"
   >
@@ -13,6 +13,7 @@
         Millions of movies, TV shows and people to discover. Explore now.
       </h5>
       <v-text-field
+        v-model="searchInput"
         label="Search Movies or TV shows"
         append-icon="mdi-magnify"
         color="green"
@@ -21,6 +22,8 @@
         solo
         rounded
         hide-details
+        @click:append="search"
+        @keyup.enter="search"
       />
     </v-row>
   </v-card>
@@ -29,5 +32,15 @@
 <script>
 export default {
   name: 'HomeSearch',
+  data () {
+    return {
+      searchInput: null,
+    };
+  },
+  methods: {
+    search () {
+      this.$router.push({ name: 'search', query: { query: this.searchInput } });
+    },
+  },
 };
 </script>

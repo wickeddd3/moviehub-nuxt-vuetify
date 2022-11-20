@@ -3,17 +3,17 @@
     <v-row justify="center">
       <v-col cols="12" xl="10" lg="12" md="12" sm="12">
         <h5 class="text-h4 font-weight-medium my-6">
-          Movies
+          TV Shows
         </h5>
         <v-row>
           <v-col cols="12" xl="3" lg="4" md="4" sm="12">
             <MoviesOption />
           </v-col>
           <v-col cols="12" xl="9" lg="8" md="8" sm="12">
-            <div class="d-flex flex-wrap" ref="infiniteList">
+            <div class="d-flex flex-wrap">
               <template v-for="(movie, index) in movies">
                 <MoviesPoster
-                  type="movie"
+                  type="tvshow"
                   :key="`${movie.id}-${index}`"
                   :value="movie"
                 />
@@ -37,10 +37,10 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import { getMovieQueryAndTitle } from '../../utils/movieQueryTitle';
+import { getTvshowQueryAndTitle } from '../../utils/tvshowQueryTitle';
 
 export default {
-  name: 'MoviesPage',
+  name: 'TvShowsPage',
   data () {
     return {
       page: 1,
@@ -48,7 +48,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      movies: 'movie/movies/results',
+      movies: 'movie/tvshows/results',
     }),
   },
   created () {
@@ -60,14 +60,14 @@ export default {
   },
   methods: {
     ...mapActions({
-      fetchMovies: 'movie/movies/list',
+      fetchMovies: 'movie/tvshows/list',
     }),
     fetch (path) {
-      const { query: movieType } = getMovieQueryAndTitle(path);
+      const { query: movieType } = getTvshowQueryAndTitle(path);
       this.fetchMovies({ movieType });
     },
     async loadMore () {
-      const { query: movieType } = getMovieQueryAndTitle(this.$route.fullPath);
+      const { query: movieType } = getTvshowQueryAndTitle(this.$route.fullPath);
       await this.fetchMovies({ movieType, page: this.page + 1 });
       this.page++;
     },

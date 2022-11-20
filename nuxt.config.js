@@ -1,12 +1,13 @@
 import colors from 'vuetify/es5/util/colors';
 
 export default {
+  mode: 'universal',
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - <3',
+    titleTemplate: '%s',
     title: 'MovieHub',
     htmlAttrs: {
       lang: 'en',
@@ -74,5 +75,6 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    standalone: true,
   },
 };

@@ -33,32 +33,32 @@
       show-arrows
     >
       <v-slide-item
-        v-for="n in 15"
-        :key="n"
-        v-slot="{ active, toggle }"
+        v-for="movie in movies"
+        :key="movie.id"
       >
         <v-card
+          :to="`/movies/${movie.id}`"
           class="ma-2"
           color="transparent"
-          height="320"
+          height="340"
           width="165"
-          @click="toggle"
+          link
           flat
         >
           <v-card
-            :color="active ? undefined : 'grey lighten-1'"
+            :img="`//image.tmdb.org/t/p/w220_and_h330_face/${movie.poster_path}`"
             class="ma-2"
             height="225"
             width="150"
             flat
           />
-          <v-avatar size="40" style="position: absolute; bottom: 70px; left: 20px;" color="grey" />
+          <v-avatar size="40" style="position: absolute; bottom: 90px; left: 20px;" color="grey" />
           <v-card-actions class="d-flex flex-column align-start my-6">
             <h6 class="text-md-subtitle-2 font-weight-black">
-              Movie Title
+              {{ movie.name }}
             </h6>
             <h6 class="text-md-subtitle-2 font-weight-light">
-              Dec 25, 2022
+              {{ formatDateToLongDate(movie.release_date) || '' }}
             </h6>
           </v-card-actions>
         </v-card>
@@ -68,14 +68,21 @@
 </template>
 
 <script>
+import dateFormat from '../../mixins/dateFormat';
+
 export default {
-  name: 'HomeMoviesSlideGroup',
+  name: 'HomeMovies',
   props: {
     title: {
       type: String,
       default: '',
     },
+    movies: {
+      type: Array,
+      default: () => [],
+    },
   },
+  mixins: [ dateFormat ],
   data: () => ({
     model: null,
   }),

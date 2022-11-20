@@ -1,10 +1,10 @@
 <template>
   <div>
     <h4 class="text-h4 font-weight-black">
-      Movie Title (2022)
+      {{ movieName }}
     </h4>
     <h6 class="text-subtitle-1 font-weight-medium">
-      Horror, Thriller
+      {{ movieGenres }}
     </h6>
     <div class="d-flex flex-wrap align-center my-4">
       <div class="d-flex justify-center align-center">
@@ -73,22 +73,44 @@
       Overview
     </h6>
     <p class="font-weight-light">
-      After being resurrected by a sinister entity, Art the Clown returns to Miles County
-      where he must hunt down and destroy a teenage girl and her younger brother on Halloween
-      night. As the body count rises, the siblings fight to stay alive while uncovering the
-      true nature of Art's evil intent.
+      {{ value?.overview }}
     </p>
-    <h6 class="text-subtitle-1 font-weight-medium">
-      Damien Leone
-    </h6>
-    <h6 class="text-subtitle-2 font-weight-light">
-      Director, Writer
-    </h6>
   </div>
 </template>
 
 <script>
+import dateFormat from '../../mixins/dateFormat';
+
 export default {
   name: 'MovieSummary',
+  props: {
+    type: {
+      type: String,
+      default: 'movie',
+    },
+    value: {
+      type: Object,
+      default: () => {},
+    },
+  },
+  mixins: [ dateFormat ],
+  computed: {
+    movieName () {
+      return this.type === 'movie' ? this.value?.title : this.value?.name;
+    },
+    movieDate () {
+      if (this.value?.release_date || this.value?.first_air_date) {
+        return this.formatDateToLongDate(this.value.release_date)
+          || this.formatDateToLongDate(this.value.first_air_date);
+      }
+      return '';
+    },
+    movieGenres () {
+      return (this.value?.genres || []).reduce((total, currentValue) => {
+        total += `${currentValue.name} • `;
+        return total;
+      }, '');
+    },
+  },
 };
 </script>

@@ -13,13 +13,16 @@
         <v-col
           cols="3"
         >
-          <MoviePoster />
+          <MoviePoster :poster="movie?.poster_path" />
         </v-col>
         <v-col
           cols="9"
           align-self="center"
         >
-          <MovieSummary />
+          <MovieSummary
+            type="movie"
+            :value="movie"
+          />
         </v-col>
       </v-row>
     </v-parallax>
@@ -36,7 +39,22 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+
 export default {
   name: 'MoviePage',
+  computed: {
+    ...mapGetters({
+      movie: 'movie/movies/current',
+    }),
+  },
+  created () {
+    this.fetchMovie(this.$route.params.id);
+  },
+  methods: {
+    ...mapActions({
+      fetchMovie: 'movie/movies/current/get',
+    }),
+  },
 };
 </script>
