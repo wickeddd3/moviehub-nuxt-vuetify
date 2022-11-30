@@ -10,7 +10,7 @@
             <MoviesOption />
           </v-col>
           <v-col cols="12" xl="9" lg="8" md="8" sm="12">
-            <div class="d-flex flex-wrap" ref="infiniteList">
+            <div v-if="ready" class="d-flex flex-wrap">
               <template v-for="(movie, index) in movies">
                 <MoviesPoster
                   type="movie"
@@ -18,6 +18,15 @@
                   :value="movie"
                 />
               </template>
+            </div>
+            <div v-else class="d-flex flex-wrap mt-4">
+              <v-skeleton-loader
+                v-for="n in 20"
+                :key="n"
+                class="mr-8 mb-8"
+                width="180"
+                type="card"
+              />
             </div>
             <v-btn
               color="green"
@@ -48,7 +57,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      movies: 'movie/movies/results',
+      movies: 'movie/movies/value/results',
+      ready: 'movie/movies/ready',
     }),
   },
   created () {

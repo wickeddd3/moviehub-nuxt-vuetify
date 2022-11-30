@@ -12,4 +12,8 @@ export default class ContactResource extends ResourceClient {
   get (id, query) {
     return super.get({ url: `${this._baseUrl}/${id}`, params: { query } });
   }
+
+  recommendations (id, queries) {
+    return super.get({ url: `${this._baseUrl}/${id}/recommendations`, params: { ...queries } });
+  }
 }

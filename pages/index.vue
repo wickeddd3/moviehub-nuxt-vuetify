@@ -5,15 +5,18 @@
         <HomeSearch />
         <HomeMovies
           title="What's Popular"
+          :ready="popularReady"
           :movies="popular"
         />
         <HomeMovies
           title="Top Rated"
+          :ready="topRatedReady"
           :movies="topRated"
         />
         <HomeTrailers title="Latest Trailers" />
         <HomeMovies
           title="Upcoming"
+          :ready="upcomingReady"
           :movies="upcoming"
         />
       </v-col>
@@ -28,9 +31,12 @@ export default {
   name: 'HomePage',
   computed: {
     ...mapGetters({
-      popular: 'movie/home/popular/results',
-      topRated: 'movie/home/topRated/results',
-      upcoming: 'movie/home/upcoming/results',
+      popular: 'movie/home/popular/value/results',
+      popularReady: 'movie/home/popular/ready',
+      topRated: 'movie/home/topRated/value/results',
+      topRatedReady: 'movie/home/topRated/ready',
+      upcoming: 'movie/home/upcoming/value/results',
+      upcomingReady: 'movie/home/upcoming/ready',
     }),
   },
   created () {

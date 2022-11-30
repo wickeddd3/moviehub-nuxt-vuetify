@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-expansion-panels
-      :value="[0]"
+      :value="[0, 1, 2]"
       class="my-4"
       multiple
     >

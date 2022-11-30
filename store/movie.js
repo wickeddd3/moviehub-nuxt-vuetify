@@ -5,16 +5,35 @@ const resource = new MovieResource();
 
 export const state = () => ({
   home: {
-    popular: [],
-    topRated: [],
-    upcoming: [],
+    popular: {
+      value: [],
+      ready: false,
+    },
+    topRated: {
+      value: [],
+      ready: false,
+    },
+    upcoming: {
+      value: [],
+      ready: false,
+    },
   },
   current: {
     movie: null,
     tvshow: null,
   },
-  movies: [],
-  tvShows: [],
+  recommendation: {
+    movies: null,
+    tvshows: null,
+  },
+  movies: {
+    value: [],
+    ready: false,
+  },
+  tvShows: {
+    value: [],
+    ready: false,
+  },
   search: {
     input: null,
     multi: {},
@@ -56,18 +75,24 @@ export const state = () => ({
 });
 
 export const getters = {
-  'home/popular': ({ home: { popular } }) => popular,
-  'home/popular/results': ({ home: { popular: { results } } }) => results,
-  'home/topRated': ({ home: { topRated } }) => topRated,
-  'home/topRated/results': ({ home: { topRated: { results } } }) => results,
-  'home/upcoming': ({ home: { upcoming } }) => upcoming,
-  'home/upcoming/results': ({ home: { upcoming: { results } } }) => results,
-  movies: ({ movies }) => movies,
-  'movies/results': ({ movies: { results } }) => results || [],
+  'home/popular/value/results': ({ home: { popular: { value } } }) => value?.results || [],
+  'home/popular/ready': ({ home: { popular: { ready } } }) => ready,
+  'home/topRated/value/results': ({ home: { topRated: { value } } }) => value?.results || [],
+  'home/topRated/ready': ({ home: { topRated: { ready } } }) => ready,
+  'home/upcoming/value/results': ({ home: { upcoming: { value } } }) => value?.results || [],
+  'home/upcoming/ready': ({ home: { upcoming: { ready } } }) => ready,
+  movies: ({ movies: { value } }) => value,
+  'movies/value/results': ({ movies: { value } }) => value?.results || [],
+  'movies/ready': ({ movies: { ready } }) => ready,
   'movies/current': ({ current: { movie } }) => movie,
-  tvshows: ({ tvShows }) => tvShows,
-  'tvshows/results': ({ tvShows: { results } }) => results || [],
+  'movies/recommendation': ({ recommendation: { movies } }) => movies?.results || [],
+  'movies/recommendation/empty': ({ recommendation: { movies } }) => isEmpty(movies?.results),
+  tvshows: ({ tvShows: { value } }) => value,
+  'tvshows/value/results': ({ tvShows: { value } }) => value?.results || [],
+  'tvshows/ready': ({ tvShows: { ready } }) => ready,
   'tvshows/current': ({ current: { tvshow } }) => tvshow,
+  'tvshows/recommendation': ({ recommendation: { tvshows } }) => tvshows?.results || [],
+  'tvshows/recommendation/empty': ({ recommendation: { tvshows } }) => isEmpty(tvshows?.results),
   'search/input': ({ search: { input } }) => input,
   'search/titles': ({ search: { titles } }) => titles,
   'search/summary/movie/total/results': ({ search: { summary: { movie } } }) => movie?.total_results || 0,
@@ -89,8 +114,9 @@ export const getters = {
 export const mutations = {
   'HOME/SET': (state, movies) => { state.home = { ...state.home, ...movies }; },
   'CURRENT/SET': (state, current) => { state.current = { ...state.current, ...current }; },
-  'MOVIES/SET': (state, movies) => { state.movies = movies; },
-  'TVSHOWS/SET': (state, tvShows) => { state.tvShows = tvShows; },
+  'RECOMMENDATION/SET': (state, recommendation) => { state.recommendation = { ...state.recommendation, ...recommendation }; },
+  'MOVIES/SET': (state, movies) => { state.movies = { ...state.movies, ...movies }; },
+  'TVSHOWS/SET': (state, tvShows) => { state.tvShows = { ...state.tvShows, ...tvShows }; },
   'SEARCH/SET': (state, results) => { state.search = { ...state.search, ...results }; },
   'SEARCH/SUMMARY/SET': (state, summary) => { state.search.summary = { ...state.search.summary, ...summary }; },
 };
@@ -99,31 +125,41 @@ export const actions = {
   'home/list': async ({ commit }, movieType) => {
     const query = '?language=en-US&page=1';
     const { data } = await resource.list(movieType, query);
-    commit('HOME/SET', { [camelCase(movieType)]: data });
+    commit('HOME/SET', { [camelCase(movieType)]: { value: data, ready: true } });
   },
   'movies/current/get': async ({ commit }, id) => {
     const query = '?language=en-US';
     const { data } = await resource.get(id, query);
     commit('CURRENT/SET', { movie: data });
   },
+  'movies/recommendation': async ({ commit }, id) => {
+    const queries = { language: 'en-US', page: 1 };
+    const { data } = await resource.recommendations(id, queries);
+    commit('RECOMMENDATION/SET', { movies: data });
+  },
   'movies/list': async ({ commit, getters }, { movieType, page = 1 }) => {
     const queries = { language: 'en-US', page };
     const { data } = await resource.list(movieType, queries);
     const movies = { ...getters.movies, ...data };
-    const updated = { ...movies, results: [ ...getters['movies/results'], ...(data?.results || []) ] };
-    commit('MOVIES/SET', updated);
+    const value = { ...movies, results: [ ...getters['movies/value/results'], ...(data?.results || []) ] };
+    commit('MOVIES/SET', { value, ready: true });
   },
   'tvshows/current/get': async ({ commit }, id) => {
     const query = '?language=en-US';
     const { data } = await resource.tvshow().get(id, query);
     commit('CURRENT/SET', { tvshow: data });
   },
+  'tvshows/recommendation': async ({ commit }, id) => {
+    const queries = { language: 'en-US', page: 1 };
+    const { data } = await resource.tvshow().recommendations(id, queries);
+    commit('RECOMMENDATION/SET', { tvshows: data });
+  },
   'tvshows/list': async ({ commit, getters }, { movieType, page = 1 }) => {
     const queries = { language: 'en-US', page };
     const { data } = await resource.tvshow().list(movieType, queries);
     const tvshows = { ...getters.tvshows, ...data };
-    const updated = { ...tvshows, results: [ ...getters['tvshows/results'], ...(data?.results || []) ] };
-    commit('TVSHOWS/SET', updated);
+    const value = { ...tvshows, results: [ ...getters['tvshows/value/results'], ...(data?.results || []) ] };
+    commit('TVSHOWS/SET', { value, ready: true });
   },
   'search/input': ({ commit }, input) => commit('SEARCH/SET', { input }),
   'search/multi': async ({ commit }, { query, page = 1 }) => {

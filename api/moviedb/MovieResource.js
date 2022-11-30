@@ -14,6 +14,10 @@ export default class ContactResource extends ResourceClient {
     return super.get({ url: `${this._baseUrl}/movie/${id}`, params: { query } });
   }
 
+  recommendations (id, queries) {
+    return super.get({ url: `${this._baseUrl}/movie/${id}/recommendations`, params: { ...queries } });
+  }
+
   tvshow () {
     return new TvShowResource(this._baseUrl);
   }

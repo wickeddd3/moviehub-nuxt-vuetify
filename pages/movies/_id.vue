@@ -30,6 +30,13 @@
     <v-row>
       <v-col cols="9">
         <MovieCasts />
+        <MovieSocial />
+        <MovieMedia />
+        <MovieRecommendations
+          v-if="!isEmptyRecommendation"
+          title="Recommendations"
+          :movies="recommendation"
+        />
       </v-col>
       <v-col cols="3">
         <MovieDetails />
@@ -46,14 +53,20 @@ export default {
   computed: {
     ...mapGetters({
       movie: 'movie/movies/current',
+      recommendation: 'movie/movies/recommendation',
+      isEmptyRecommendation: 'movie/movies/recommendation/empty',
     }),
   },
   created () {
-    this.fetchMovie(this.$route.params.id);
+    Promise.all([
+      this.fetchMovie(this.$route.params.id),
+      this.fetchRecommendation(this.$route.params.id),
+    ]);
   },
   methods: {
     ...mapActions({
       fetchMovie: 'movie/movies/current/get',
+      fetchRecommendation: 'movie/movies/recommendation',
     }),
   },
 };

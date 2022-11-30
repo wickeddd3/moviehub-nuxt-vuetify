@@ -27,6 +27,7 @@
       </v-btn-toggle>
     </v-row>
     <v-slide-group
+      v-if="ready"
       v-model="model"
       class="pa-0"
       active-class="success"
@@ -55,7 +56,7 @@
           <v-avatar size="40" style="position: absolute; bottom: 90px; left: 20px;" color="grey" />
           <v-card-actions class="d-flex flex-column align-start my-6">
             <h6 class="text-md-subtitle-2 font-weight-black">
-              {{ movie.name }}
+              {{ movie.name || movie.title }}
             </h6>
             <h6 class="text-md-subtitle-2 font-weight-light">
               {{ formatDateToLongDate(movie.release_date) || '' }}
@@ -64,6 +65,15 @@
         </v-card>
       </v-slide-item>
     </v-slide-group>
+    <div v-else class="d-flex">
+      <v-skeleton-loader
+        v-for="n in 6"
+        :key="n"
+        class="mx-auto"
+        width="170"
+        type="card"
+      />
+    </div>
   </v-container>
 </template>
 
@@ -73,6 +83,10 @@ import dateFormat from '../../mixins/dateFormat';
 export default {
   name: 'HomeMovies',
   props: {
+    ready: {
+      type: Boolean,
+      default: false,
+    },
     title: {
       type: String,
       default: '',

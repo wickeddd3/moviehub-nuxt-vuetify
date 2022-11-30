@@ -1,12 +1,12 @@
 <template>
   <v-card
-    height="140"
+    height="170"
     rounded
     class="mb-5"
   >
     <div class="d-flex flex-no-wrap">
       <v-avatar
-        height="140"
+        height="170"
         width="110"
         min-width="110"
         tile

@@ -7,7 +7,7 @@
     flat
   >
     <v-card
-      color="grey lighten-1"
+      img="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"
       class="ma-2"
       height="175"
       width="125"
@@ -15,10 +15,10 @@
     />
     <v-card-actions class="d-flex flex-column align-start my-6">
       <h6 class="text-md-subtitle-2 font-weight-black">
-        Lauren LaVera
+        John Doe
       </h6>
       <h6 class="text-md-subtitle-2 font-weight-light">
-        Sienna
+        John
       </h6>
     </v-card-actions>
   </v-card>
