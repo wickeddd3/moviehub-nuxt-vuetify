@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/tv-shows", {data:[{}],fetch:{},mutations:[]});
