@@ -76,6 +76,12 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     standalone: true,
-    publicPath: process.env.NODE_ENV === 'production' ? '/moviehub-nuxt-vuetify/' : '/',
+    publicPath: process.env.NODE_ENV === 'production' ? '/docs/moviehub-nuxt-vuetify/' : '/',
+  },
+
+  generate: {
+    dir: 'docs', // docs/ instead of dist/
+    subFolders: false, // HTML files are generated according to the route path
+    fallback: '404.html',
   },
 };
